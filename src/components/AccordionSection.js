@@ -2,8 +2,10 @@ import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import styles from "./AccordionSection.module.css";
 import { useAccordionContext } from "./Accordion";
+import { useId } from "./useId";
 
-export const AccordionSection = ({ children, title, id, index }) => {
+export const AccordionSection = ({ children, title, index }) => {
+  const id = useId();
   const sectionId = `section-${id}`;
   const labelId = `label-${id}`;
 
@@ -84,6 +86,5 @@ export const AccordionSection = ({ children, title, id, index }) => {
 
 AccordionSection.propTypes = {
   index: PropTypes.number,
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title: PropTypes.string.isRequired
 };

@@ -83,36 +83,6 @@ export const Accordion = ({ children, expanded, onToggle, ...rest }) => {
     [selected, setSelected, expanded, onToggle, children]
   );
 
-  if (process.env.NODE_ENV === "development") {
-    const uniqueIds = new Set();
-    React.Children.forEach(children, child => {
-      if (child === null) return;
-      if (typeof child !== "object") {
-        console.warn(
-          `Only AccordionSection and null are allowed as a child of Accordion. Found primitive value: ${child}`
-        );
-        return;
-      }
-      if (typeof child.type === "string") {
-        console.warn(
-          `Only AccordionSection and null are allowed as a child of Accordion. Found ${
-            child.type
-          }`
-        );
-        return;
-      }
-      if (uniqueIds.has(child.props.id)) {
-        console.warn(
-          `AccordionSection id param should be unique, found duplicate key: ${
-            child.props.id
-          }`
-        );
-      } else {
-        uniqueIds.add(child.props.id);
-      }
-    });
-  }
-
   return (
     <div
       className={styles.Accordion}
@@ -121,7 +91,30 @@ export const Accordion = ({ children, expanded, onToggle, ...rest }) => {
     >
       <AccordionContext.Provider value={context}>
         {React.Children.map(children, (child, index) => {
-          if (!child || !child.props) return child;
+          if (process.env.NODE_ENV === "development") {
+            if (child === null) return;
+            if (typeof child !== "object") {
+              console.warn(
+                `Only AccordionSection and null are allowed as a child of Accordion. Found primitive value: ${child}`
+              );
+              return;
+            }
+            if (typeof child.type === "string") {
+              console.warn(
+                `Only AccordionSection and null are allowed as a child of Accordion. Found ${
+                  child.type
+                }`
+              );
+              return;
+            }
+            if (child.props.index !== undefined) {
+              console.warn(
+                `Don't provide index param in AccordionSection it is used for internal purposes`
+              );
+            }
+          } else {
+            if (!child || !child.props) return child;
+          }
           return React.cloneElement(child, {
             ...child.props,
             index
