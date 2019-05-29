@@ -1,3 +1,3 @@
 import React from "react";
 
-export const Accordion = () => <div>accordion</div>;
+export const Accordion = ({ children }) => <div>{children}</div>;
