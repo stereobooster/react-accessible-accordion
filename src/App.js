@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./App.module.css";
 
 import { Accordion } from "./components/Accordion";
 import { AccordionSection } from "./components/AccordionSection";
 
 function App() {
+  const [expanded1, setExpanded1] = useState(false);
+  const [expanded2, setExpanded2] = useState(true);
+
   return (
     <div className={styles.Wrapper}>
       <Accordion>
-        <AccordionSection title="section 1" id="1">
+        <AccordionSection
+          title="section 1"
+          id="1"
+          expanded={expanded1}
+          onToggle={() => setExpanded1(!expanded1)}
+        >
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. In varius
             lobortis iaculis. Donec ornare tellus vel quam convallis, quis
@@ -21,7 +29,12 @@ function App() {
             massa vitae interdum.
           </p>
         </AccordionSection>
-        <AccordionSection title="section 2" id="2" expanded>
+        <AccordionSection
+          title="section 2"
+          id="2"
+          expanded={expanded2}
+          onToggle={() => setExpanded2(!expanded2)}
+        >
           <p>
             <a href="/">test link</a>
             Suspendisse lobortis diam quis magna faucibus, in volutpat eros
