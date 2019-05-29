@@ -1,0 +1,14 @@
+.Label {
+  cursor: pointer;
+  padding: 10px 20px;
+  border: 1px solid #222;
+  border-bottom: none;
+  background: lightblue;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+.Panel {
+  padding: 0 20px 10px;
+  border: 1px solid #222;
+}

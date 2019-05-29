@@ -1,10 +1,12 @@
 import React from "react";
+import styles from "./App.module.css";
+
 import { Accordion } from "./components/Accordion";
 import { AccordionSection } from "./components/AccordionSection";
 
 function App() {
   return (
-    <>
+    <div className={styles.Wrapper}>
       <Accordion>
         <AccordionSection title="section 1" id="1">
           <p>
@@ -40,7 +42,7 @@ function App() {
           </p>
         </AccordionSection>
       </Accordion>
-    </>
+    </div>
   );
 }
 
