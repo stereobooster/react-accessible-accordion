@@ -51,6 +51,21 @@ export const Accordion = ({ children }) => {
     [selected]
   );
 
+  if (process.env.NODE_ENV === "development") {
+    const uniqueIds = new Set();
+    React.Children.forEach(children, child => {
+      if (uniqueIds.has(child.props.id)) {
+        console.warn(
+          `AccordionSection id param should be unique, found duplicate key: ${
+            child.props.id
+          }`
+        );
+      } else {
+        uniqueIds.add(child.props.id);
+      }
+    });
+  }
+
   return (
     <div
       className={styles.Accordion}
