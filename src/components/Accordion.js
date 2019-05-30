@@ -5,11 +5,14 @@ import React, {
   useState,
   useMemo
 } from "react";
+import PropTypes from "prop-types";
 import styles from "./Accordion.module.css";
 
 const AccordionContext = createContext({
   focusRef: {},
-  selected: null
+  selected: null,
+  expandedAll: {},
+  onToggle: undefined
 });
 export const useAccordionContext = () => useContext(AccordionContext);
 
@@ -40,15 +43,17 @@ End
   👍 When focus is on an accordion header, moves focus to the last accordion header.
 ```
  */
-export const Accordion = ({ children }) => {
+export const Accordion = ({ children, expanded, onToggle }) => {
   const focusRef = useRef(null);
   const [selected, setSelected] = useState(null);
   const context = useMemo(
     () => ({
       focusRef,
-      selected
+      selected,
+      expandedAll: expanded,
+      onToggle
     }),
-    [selected]
+    [selected, expanded, onToggle]
   );
 
   if (process.env.NODE_ENV === "development") {
@@ -114,4 +119,13 @@ export const Accordion = ({ children }) => {
       </AccordionContext.Provider>
     </div>
   );
+};
+
+Accordion.propTypes = {
+  expanded: PropTypes.objectOf(PropTypes.bool),
+  onToggle: PropTypes.func
+};
+
+Accordion.defaultProps = {
+  expanded: {}
 };

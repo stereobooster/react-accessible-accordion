@@ -1,27 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./App.module.css";
 
 import { Accordion } from "./components/Accordion";
 import { AccordionSection } from "./components/AccordionSection";
+import { useAccordionState } from "./components/useAccordionState";
 
 function App() {
-  const [expanded, setExpanded] = useState({ "2": true });
-  const toggle = id => {
-    setExpanded({
-      ...expanded,
-      [id]: !expanded[id]
-    });
-  };
-
+  const accordionProps = useAccordionState({ id2: true });
   return (
     <div className={styles.Wrapper}>
-      <Accordion>
-        <AccordionSection
-          title="section 1"
-          id="1"
-          expanded={expanded["1"]}
-          onToggle={toggle}
-        >
+      <Accordion {...accordionProps}>
+        <AccordionSection title="section 1" id="id1">
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. In varius
             lobortis iaculis. Donec ornare tellus vel quam convallis, quis
@@ -34,12 +23,7 @@ function App() {
             massa vitae interdum.
           </p>
         </AccordionSection>
-        <AccordionSection
-          title="section 2"
-          id="2"
-          expanded={expanded["2"]}
-          onToggle={toggle}
-        >
+        <AccordionSection title="section 2" id="id2">
           <p>
             <a href="/">test link</a>
             Suspendisse lobortis diam quis magna faucibus, in volutpat eros
