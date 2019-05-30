@@ -1,9 +1,7 @@
 import React from "react";
 import styles from "./App.module.css";
 
-import { Accordion } from "./components/Accordion";
-import { AccordionSection } from "./components/AccordionSection";
-import { useAccordionState } from "./components/useAccordionState";
+import { Accordion, AccordionSection, useAccordionState } from "./components";
 
 function App() {
   const accordionProps = useAccordionState({ id2: true });
