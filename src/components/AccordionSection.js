@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import PropTypes from "prop-types";
 import styles from "./AccordionSection.module.css";
 import { useAccordionContext } from "./Accordion";
 
@@ -61,4 +62,11 @@ export const AccordionSection = ({
       </div>
     </>
   );
+};
+
+AccordionSection.propTypes = {
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  title: PropTypes.string.isRequired,
+  expanded: PropTypes.bool,
+  onToggle: PropTypes.func
 };
