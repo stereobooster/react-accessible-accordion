@@ -30,12 +30,12 @@ export const AccordionSection = ({
         id={labelId}
         tabIndex={0}
         className={styles.Label}
-        onClick={onToggle}
+        onClick={() => onToggle(id)}
         onKeyDown={e => {
           switch (e.key) {
             case " ":
             case "Enter":
-              onToggle();
+              onToggle(id);
               break;
             default:
           }
