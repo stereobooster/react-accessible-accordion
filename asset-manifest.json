@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/react-accessible-accordion/static/css/main.0e4d1c6e.chunk.css",
+    "main.js": "/react-accessible-accordion/static/js/main.684e1a3c.chunk.js",
+    "main.js.map": "/react-accessible-accordion/static/js/main.684e1a3c.chunk.js.map",
+    "runtime~main.js": "/react-accessible-accordion/static/js/runtime~main.85066624.js",
+    "runtime~main.js.map": "/react-accessible-accordion/static/js/runtime~main.85066624.js.map",
+    "static/js/2.0c9f9697.chunk.js": "/react-accessible-accordion/static/js/2.0c9f9697.chunk.js",
+    "static/js/2.0c9f9697.chunk.js.map": "/react-accessible-accordion/static/js/2.0c9f9697.chunk.js.map",
+    "index.html": "/react-accessible-accordion/index.html",
+    "precache-manifest.690a298ea5faaccd88ab866caefcfd6a.js": "/react-accessible-accordion/precache-manifest.690a298ea5faaccd88ab866caefcfd6a.js",
+    "service-worker.js": "/react-accessible-accordion/service-worker.js",
+    "static/css/main.0e4d1c6e.chunk.css.map": "/react-accessible-accordion/static/css/main.0e4d1c6e.chunk.css.map"
+  }
+}
