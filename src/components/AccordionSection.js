@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "./AccordionSection.module.css";
+import { useAccordionContext } from "./Accordion";
 
 export const AccordionSection = ({
   children,
@@ -10,6 +11,14 @@ export const AccordionSection = ({
 }) => {
   const sectionId = `section-${id}`;
   const labelId = `label-${id}`;
+
+  const { focusRef, selected } = useAccordionContext();
+  const labelRef = useRef();
+  useEffect(() => {
+    if (id === selected && labelRef.current) {
+      labelRef.current.focus();
+    }
+  }, [id, selected]);
 
   return (
     <>
@@ -30,6 +39,13 @@ export const AccordionSection = ({
             default:
           }
         }}
+        onFocus={() => {
+          focusRef.current = id;
+        }}
+        onBlur={() => {
+          focusRef.current = null;
+        }}
+        ref={labelRef}
       >
         {title}
         <span aria-hidden={true}>{expanded ? "▲" : "▼"}</span>
