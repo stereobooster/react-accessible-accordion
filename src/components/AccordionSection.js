@@ -7,7 +7,13 @@ export const AccordionSection = ({ children, title, id }) => {
   const sectionId = `section-${id}`;
   const labelId = `label-${id}`;
 
-  const { focusRef, selected, expandedAll, onToggle } = useAccordionContext();
+  const {
+    focusRef,
+    selected,
+    expandedAll,
+    onToggle,
+    onNavigation
+  } = useAccordionContext();
   const expanded = expandedAll[id];
   const labelRef = useRef();
   useEffect(() => {
@@ -30,7 +36,24 @@ export const AccordionSection = ({ children, title, id }) => {
           switch (e.key) {
             case " ":
             case "Enter":
+              e.preventDefault();
               onToggle && onToggle(id);
+              break;
+            case "ArrowDown":
+              e.preventDefault();
+              onNavigation("ArrowDown");
+              break;
+            case "ArrowUp":
+              e.preventDefault();
+              onNavigation("ArrowUp");
+              break;
+            case "Home":
+              e.preventDefault();
+              onNavigation("Home");
+              break;
+            case "End":
+              e.preventDefault();
+              onNavigation("End");
               break;
             default:
           }
