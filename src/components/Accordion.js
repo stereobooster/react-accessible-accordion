@@ -12,7 +12,8 @@ const AccordionContext = createContext({
   focusRef: {},
   selected: null,
   expandedAll: {},
-  onToggle: undefined
+  onToggle: undefined,
+  onNavigation: () => undefined
 });
 export const useAccordionContext = () => useContext(AccordionContext);
 
@@ -52,51 +53,15 @@ End
 export const Accordion = ({ children, expanded, onToggle }) => {
   const focusRef = useRef(null);
   const [selected, setSelected] = useState(null);
+
   const context = useMemo(
     () => ({
       focusRef,
       selected,
       expandedAll: expanded,
-      onToggle
-    }),
-    [selected, expanded, onToggle]
-  );
-
-  if (process.env.NODE_ENV === "development") {
-    const uniqueIds = new Set();
-    React.Children.forEach(children, child => {
-      if (child === null) return;
-      if (typeof child !== "object") {
-        console.warn(
-          `Only AccordionSection and null are allowed as a child of Accordion. Found primitive value: ${child}`
-        );
-        return;
-      }
-      if (typeof child.type === "string") {
-        console.warn(
-          `Only AccordionSection and null are allowed as a child of Accordion. Found ${
-            child.type
-          }`
-        );
-        return;
-      }
-      if (uniqueIds.has(child.props.id)) {
-        console.warn(
-          `AccordionSection id param should be unique, found duplicate key: ${
-            child.props.id
-          }`
-        );
-      } else {
-        uniqueIds.add(child.props.id);
-      }
-    });
-  }
-
-  return (
-    <div
-      className={styles.Accordion}
-      onKeyDown={e => {
-        switch (e.key) {
+      onToggle,
+      onNavigation: key => {
+        switch (key) {
           case "ArrowDown":
             {
               const ids = getIds(children);
@@ -133,8 +98,43 @@ export const Accordion = ({ children, expanded, onToggle }) => {
             break;
           default:
         }
-      }}
-    >
+      }
+    }),
+    [selected, setSelected, expanded, onToggle, children]
+  );
+
+  if (process.env.NODE_ENV === "development") {
+    const uniqueIds = new Set();
+    React.Children.forEach(children, child => {
+      if (child === null) return;
+      if (typeof child !== "object") {
+        console.warn(
+          `Only AccordionSection and null are allowed as a child of Accordion. Found primitive value: ${child}`
+        );
+        return;
+      }
+      if (typeof child.type === "string") {
+        console.warn(
+          `Only AccordionSection and null are allowed as a child of Accordion. Found ${
+            child.type
+          }`
+        );
+        return;
+      }
+      if (uniqueIds.has(child.props.id)) {
+        console.warn(
+          `AccordionSection id param should be unique, found duplicate key: ${
+            child.props.id
+          }`
+        );
+      } else {
+        uniqueIds.add(child.props.id);
+      }
+    });
+  }
+
+  return (
+    <div className={styles.Accordion}>
       <AccordionContext.Provider value={context}>
         {children}
       </AccordionContext.Provider>
