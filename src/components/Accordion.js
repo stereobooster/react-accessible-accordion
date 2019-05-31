@@ -16,6 +16,12 @@ const AccordionContext = createContext({
 });
 export const useAccordionContext = () => useContext(AccordionContext);
 
+const getIds = children =>
+  React.Children.map(
+    children,
+    child => child && child.props && child.props.id
+  ).filter(x => x !== null);
+
 /**
  * Accordion according to Accordion Design Pattern in WAI-ARIA Authoring Practices 1.1
  * see https://www.w3.org/TR/wai-aria-practices/examples/accordion/accordion.html
@@ -59,6 +65,21 @@ export const Accordion = ({ children, expanded, onToggle }) => {
   if (process.env.NODE_ENV === "development") {
     const uniqueIds = new Set();
     React.Children.forEach(children, child => {
+      if (child === null) return;
+      if (typeof child !== "object") {
+        console.warn(
+          `Only AccordionSection and null are allowed as a child of Accordion. Found primitive value: ${child}`
+        );
+        return;
+      }
+      if (typeof child.type === "string") {
+        console.warn(
+          `Only AccordionSection and null are allowed as a child of Accordion. Found ${
+            child.type
+          }`
+        );
+        return;
+      }
       if (uniqueIds.has(child.props.id)) {
         console.warn(
           `AccordionSection id param should be unique, found duplicate key: ${
@@ -78,7 +99,7 @@ export const Accordion = ({ children, expanded, onToggle }) => {
         switch (e.key) {
           case "ArrowDown":
             {
-              const ids = React.Children.map(children, child => child.props.id);
+              const ids = getIds(children);
               const index = ids.findIndex(x => x === focusRef.current);
               if (index >= ids.length - 1) {
                 setSelected(ids[0]);
@@ -89,7 +110,7 @@ export const Accordion = ({ children, expanded, onToggle }) => {
             break;
           case "ArrowUp":
             {
-              const ids = React.Children.map(children, child => child.props.id);
+              const ids = getIds(children);
               const index = ids.findIndex(x => x === focusRef.current);
               if (index <= 0) {
                 setSelected(ids[ids.length - 1]);
@@ -100,13 +121,13 @@ export const Accordion = ({ children, expanded, onToggle }) => {
             break;
           case "Home":
             {
-              const ids = React.Children.map(children, child => child.props.id);
+              const ids = getIds(children);
               setSelected(ids[0]);
             }
             break;
           case "End":
             {
-              const ids = React.Children.map(children, child => child.props.id);
+              const ids = getIds(children);
               setSelected(ids[ids.length - 1]);
             }
             break;
