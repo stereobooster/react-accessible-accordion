@@ -12,10 +12,6 @@ function App() {
 
   return (
     <div className={styles.Wrapper}>
-      <button onClick={toggleTest}>toggle</button>
-      <br />
-      <br />
-      <br />
       <Accordion {...accordionProps}>
         <AccordionSection title="section 1" id="id1">
           <p>
@@ -74,6 +70,10 @@ function App() {
           </AccordionSection>
         )}
       </Accordion>
+      <br />
+      <br />
+      <br />
+      <button onClick={toggleTest}>toggle</button>
     </div>
   );
 }

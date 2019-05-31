@@ -50,7 +50,7 @@ End
   👍 When focus is on an accordion header, moves focus to the last accordion header.
 ```
  */
-export const Accordion = ({ children, expanded, onToggle }) => {
+export const Accordion = ({ children, expanded, onToggle, ...rest }) => {
   const focusRef = useRef(null);
   const [selected, setSelected] = useState(null);
 
@@ -134,7 +134,11 @@ export const Accordion = ({ children, expanded, onToggle }) => {
   }
 
   return (
-    <div className={styles.Accordion}>
+    <div
+      className={styles.Accordion}
+      {...rest}
+      onBlur={() => setSelected(null)}
+    >
       <AccordionContext.Provider value={context}>
         {children}
       </AccordionContext.Provider>
