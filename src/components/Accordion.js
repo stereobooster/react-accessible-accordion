@@ -134,7 +134,11 @@ export const Accordion = ({ children, expanded, onToggle, ...rest }) => {
   }
 
   return (
-    <div className={styles.Accordion} {...rest}>
+    <div
+      className={styles.Accordion}
+      {...rest}
+      onBlur={() => setSelected(null)}
+    >
       <AccordionContext.Provider value={context}>
         {children}
       </AccordionContext.Provider>
