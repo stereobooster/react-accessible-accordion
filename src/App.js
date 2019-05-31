@@ -2,11 +2,14 @@ import React from "react";
 import styles from "./App.module.css";
 
 import { Accordion, AccordionSection, useAccordionState } from "./components";
+import { styled } from "./components/moduledComponent";
+
+const Content = styled("Content", styles);
 
 function App() {
   const accordionProps = useAccordionState({ id2: true });
   return (
-    <div className={styles.Wrapper}>
+    <Content>
       <Accordion {...accordionProps}>
         <AccordionSection title="section 1" id="id1">
           <p>
@@ -42,7 +45,7 @@ function App() {
           </p>
         </AccordionSection>
       </Accordion>
-    </div>
+    </Content>
   );
 }
 

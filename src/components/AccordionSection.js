@@ -2,6 +2,16 @@ import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import styles from "./AccordionSection.module.css";
 import { useAccordionContext } from "./Accordion";
+import { styled } from "./moduledComponent";
+
+const Label = styled("Label", styles);
+Label.defaultProps = {
+  role: "button"
+};
+const Panel = styled("Panel", styles);
+Panel.defaultProps = {
+  role: "region"
+};
 
 export const AccordionSection = ({ children, title, id }) => {
   const sectionId = `section-${id}`;
@@ -18,13 +28,11 @@ export const AccordionSection = ({ children, title, id }) => {
 
   return (
     <>
-      <div
-        role="button"
+      <Label
         aria-expanded={expanded}
         aria-controls={sectionId}
         id={labelId}
         tabIndex={0}
-        className={styles.Label}
         onClick={() => onToggle && onToggle(id)}
         onKeyDown={e => {
           switch (e.key) {
@@ -45,16 +53,10 @@ export const AccordionSection = ({ children, title, id }) => {
       >
         {title}
         <span aria-hidden={true}>{expanded ? "▲" : "▼"}</span>
-      </div>
-      <div
-        role="region"
-        aria-labelledby={labelId}
-        id={sectionId}
-        hidden={!expanded}
-        className={styles.Panel}
-      >
+      </Label>
+      <Panel aria-labelledby={labelId} id={sectionId} hidden={!expanded}>
         {expanded && children}
-      </div>
+      </Panel>
     </>
   );
 };

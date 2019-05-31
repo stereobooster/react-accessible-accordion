@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import styles from "./Accordion.module.css";
+import { styled } from "./moduledComponent";
 
 const AccordionContext = createContext({
   focusRef: {},
@@ -15,6 +16,8 @@ const AccordionContext = createContext({
   onToggle: undefined
 });
 export const useAccordionContext = () => useContext(AccordionContext);
+
+const AccordionContent = styled("AccordionContent", styles);
 
 /**
  * Accordion according to Accordion Design Pattern in WAI-ARIA Authoring Practices 1.1
@@ -72,8 +75,7 @@ export const Accordion = ({ children, expanded, onToggle }) => {
   }
 
   return (
-    <div
-      className={styles.Accordion}
+    <AccordionContent
       onKeyDown={e => {
         switch (e.key) {
           case "ArrowDown":
@@ -117,7 +119,7 @@ export const Accordion = ({ children, expanded, onToggle }) => {
       <AccordionContext.Provider value={context}>
         {children}
       </AccordionContext.Provider>
-    </div>
+    </AccordionContent>
   );
 };
 
