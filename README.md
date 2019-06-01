@@ -32,17 +32,15 @@ Keyboard Support:
 
 ```js
 import React from "react";
-
-import { Accordion, AccordionSection, useAccordionState } from "./components";
+import { Accordion, AccordionSection } from "./components";
 
 function App() {
-  const accordionProps = useAccordionState({ id2: true });
   return (
     <Accordion {...accordionProps}>
-      <AccordionSection title="section 1" id="id1">
+      <AccordionSection title="section 1">
         Lorem ipsum dolor sit amet
       </AccordionSection>
-      <AccordionSection title="section 2" id="id2">
+      <AccordionSection title="section 2">
         Suspendisse lobortis diam quis magna faucibus
       </AccordionSection>
     </Accordion>
