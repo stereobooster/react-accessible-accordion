@@ -1,4 +1,5 @@
 # Accessible React accordion component
+[![Build Status](https://travis-ci.org/stereobooster/react-accessible-accordion.svg?branch=master)](https://travis-ci.org/stereobooster/react-accessible-accordion)
 
 Read the blog post about this repo [here](https://dev.to/stereobooster/accessible-react-accordion-component-4p99).
 
@@ -8,23 +9,23 @@ Component is implemented according to [WAI-ARIA Authoring Practices 1.1](https:/
 
 Keyboard Support:
 
-- Space or Enter
+- <kbd>Space</kbd> or <kbd>Enter</kbd>
   - When focus is on the accordion header of a collapsed section, expands the section.
-- Tab
+- <kbd>Tab</kbd>
   - Moves focus to the next focusable element.
   - All focusable elements in the accordion are included in the page Tab sequence.
-- Shift + Tab
+- <kbd>Shift</kbd> + <kbd>Tab</kbd>
   - Moves focus to the previous focusable element.
   - All focusable elements in the accordion are included in the page Tab sequence.
-- Down Arrow
+- <kbd>Down Arrow</kbd>
   - When focus is on an accordion header, moves focus to the next accordion header.
   - When focus is on last accordion header, moves focus to first accordion header.
-- Up Arrow
+- <kbd>Up Arrow</kbd>
   - When focus is on an accordion header, moves focus to the previous accordion header.
   - When focus is on first accordion header, moves focus to last accordion header.
-- Home
+- <kbd>Home</kbd>
   - When focus is on an accordion header, moves focus to the first accordion header.
-- End
+- <kbd>End</kbd>
   - When focus is on an accordion header, moves focus to the last accordion header.
 
 ## Example of Usage

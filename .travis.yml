@@ -1,6 +1,10 @@
 language: node_js
 node_js:
   - "10"
-cache: yarn
+cache:
+  yarn: true
+  directories:
+    # we also need to cache folder with Cypress binary
+    - ~/.cache
 notifications:
   email: false
