@@ -2,20 +2,18 @@ import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import styles from "./AccordionSection.module.css";
 import { useAccordionContext } from "./Accordion";
-import { useId } from "./useId";
 
 export const AccordionSection = ({ children, title, index }) => {
-  const id = useId();
-  const sectionId = `section-${id}`;
-  const labelId = `label-${id}`;
-
   const {
     focusRef,
     selected,
     expandedAll,
     onToggle,
-    onNavigation
+    onNavigation,
+    id
   } = useAccordionContext();
+  const sectionId = `section-${id}-${index}`;
+  const labelId = `label-${id}-${index}`;
   const expanded = expandedAll[index];
   const labelRef = useRef();
   useEffect(() => {
