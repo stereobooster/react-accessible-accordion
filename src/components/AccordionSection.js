@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./AccordionSection.module.css";
 import { useAccordionContext } from "./Accordion";
 
-export const AccordionSection = ({ children, title, id }) => {
+export const AccordionSection = ({ children, title, id, index }) => {
   const sectionId = `section-${id}`;
   const labelId = `label-${id}`;
 
@@ -14,13 +14,13 @@ export const AccordionSection = ({ children, title, id }) => {
     onToggle,
     onNavigation
   } = useAccordionContext();
-  const expanded = expandedAll[id];
+  const expanded = expandedAll[index];
   const labelRef = useRef();
   useEffect(() => {
-    if (id === selected && labelRef.current) {
+    if (index === selected && labelRef.current) {
       labelRef.current.focus();
     }
-  }, [id, selected]);
+  }, [index, selected]);
 
   return (
     <>
@@ -31,13 +31,13 @@ export const AccordionSection = ({ children, title, id }) => {
         id={labelId}
         tabIndex={0}
         className={styles.Label}
-        onClick={() => onToggle && onToggle(id)}
+        onClick={() => onToggle && onToggle(index)}
         onKeyDown={e => {
           switch (e.key) {
             case " ":
             case "Enter":
               e.preventDefault();
-              onToggle && onToggle(id);
+              onToggle && onToggle(index);
               break;
             case "ArrowDown":
               e.preventDefault();
@@ -59,7 +59,7 @@ export const AccordionSection = ({ children, title, id }) => {
           }
         }}
         onFocus={() => {
-          focusRef.current = id;
+          focusRef.current = index;
         }}
         onBlur={() => {
           focusRef.current = null;
@@ -83,6 +83,7 @@ export const AccordionSection = ({ children, title, id }) => {
 };
 
 AccordionSection.propTypes = {
+  index: PropTypes.number,
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   title: PropTypes.string.isRequired
 };

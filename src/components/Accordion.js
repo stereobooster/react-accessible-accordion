@@ -11,17 +11,11 @@ import styles from "./Accordion.module.css";
 const AccordionContext = createContext({
   focusRef: {},
   selected: null,
-  expandedAll: {},
+  expandedAll: [],
   onToggle: undefined,
   onNavigation: () => undefined
 });
 export const useAccordionContext = () => useContext(AccordionContext);
-
-const getIds = children =>
-  React.Children.map(
-    children,
-    child => child && child.props && child.props.id
-  ).filter(x => x !== null);
 
 /**
  * Accordion according to Accordion Design Pattern in WAI-ARIA Authoring Practices 1.1
@@ -63,38 +57,24 @@ export const Accordion = ({ children, expanded, onToggle, ...rest }) => {
       onNavigation: key => {
         switch (key) {
           case "ArrowDown":
-            {
-              const ids = getIds(children);
-              const index = ids.findIndex(x => x === focusRef.current);
-              if (index >= ids.length - 1) {
-                setSelected(ids[0]);
-              } else {
-                setSelected(ids[index + 1]);
-              }
+            if (focusRef.current >= React.Children.count(children) - 1) {
+              setSelected(0);
+            } else {
+              setSelected(focusRef.current + 1);
             }
             break;
           case "ArrowUp":
-            {
-              const ids = getIds(children);
-              const index = ids.findIndex(x => x === focusRef.current);
-              if (index <= 0) {
-                setSelected(ids[ids.length - 1]);
-              } else {
-                setSelected(ids[index - 1]);
-              }
+            if (focusRef.current <= 0) {
+              setSelected(React.Children.count(children) - 1);
+            } else {
+              setSelected(focusRef.current - 1);
             }
             break;
           case "Home":
-            {
-              const ids = getIds(children);
-              setSelected(ids[0]);
-            }
+            setSelected(0);
             break;
           case "End":
-            {
-              const ids = getIds(children);
-              setSelected(ids[ids.length - 1]);
-            }
+            setSelected(React.Children.count(children) - 1);
             break;
           default:
         }
@@ -140,17 +120,23 @@ export const Accordion = ({ children, expanded, onToggle, ...rest }) => {
       onBlur={() => setSelected(null)}
     >
       <AccordionContext.Provider value={context}>
-        {children}
+        {React.Children.map(children, (child, index) => {
+          if (!child || !child.props) return child;
+          return React.cloneElement(child, {
+            ...child.props,
+            index
+          });
+        })}
       </AccordionContext.Provider>
     </div>
   );
 };
 
 Accordion.propTypes = {
-  expanded: PropTypes.objectOf(PropTypes.bool),
+  expanded: PropTypes.arrayOf(PropTypes.bool),
   onToggle: PropTypes.func
 };
 
 Accordion.defaultProps = {
-  expanded: {}
+  expanded: []
 };

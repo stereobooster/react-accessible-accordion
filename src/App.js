@@ -4,7 +4,7 @@ import styles from "./App.module.css";
 import { Accordion, AccordionSection, useAccordionState } from "./components";
 
 function App() {
-  const accordionProps = useAccordionState({ id2: true });
+  const accordionProps = useAccordionState([false, true]);
   const [test, setTest] = useState(true);
   const toggleTest = () => {
     setTest(!test);
