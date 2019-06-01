@@ -3,24 +3,24 @@ import PropTypes from "prop-types";
 import styles from "./AccordionSection.module.css";
 import { useAccordionContext } from "./Accordion";
 
-export const AccordionSection = ({ children, title, id }) => {
-  const sectionId = `section-${id}`;
-  const labelId = `label-${id}`;
-
+export const AccordionSection = ({ children, title, index }) => {
   const {
     focusRef,
     selected,
     expandedAll,
     onToggle,
-    onNavigation
+    onNavigation,
+    id
   } = useAccordionContext();
-  const expanded = expandedAll[id];
+  const sectionId = `section-${id}-${index}`;
+  const labelId = `label-${id}-${index}`;
+  const expanded = expandedAll[index];
   const labelRef = useRef();
   useEffect(() => {
-    if (id === selected && labelRef.current) {
+    if (index === selected[0] && labelRef.current) {
       labelRef.current.focus();
     }
-  }, [id, selected]);
+  }, [index, selected]);
 
   return (
     <>
@@ -31,13 +31,13 @@ export const AccordionSection = ({ children, title, id }) => {
         id={labelId}
         tabIndex={0}
         className={styles.Label}
-        onClick={() => onToggle && onToggle(id)}
+        onClick={() => onToggle && onToggle(index)}
         onKeyDown={e => {
           switch (e.key) {
             case " ":
             case "Enter":
               e.preventDefault();
-              onToggle && onToggle(id);
+              onToggle && onToggle(index);
               break;
             case "ArrowDown":
               e.preventDefault();
@@ -59,7 +59,7 @@ export const AccordionSection = ({ children, title, id }) => {
           }
         }}
         onFocus={() => {
-          focusRef.current = id;
+          focusRef.current = index;
         }}
         onBlur={() => {
           focusRef.current = null;
@@ -83,6 +83,6 @@ export const AccordionSection = ({ children, title, id }) => {
 };
 
 AccordionSection.propTypes = {
-  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  index: PropTypes.number,
   title: PropTypes.string.isRequired
 };

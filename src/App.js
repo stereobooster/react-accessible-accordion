@@ -4,7 +4,7 @@ import styles from "./App.module.css";
 import { Accordion, AccordionSection, useAccordionState } from "./components";
 
 function App() {
-  const accordionProps = useAccordionState({ id2: true });
+  const accordionProps = useAccordionState([false, true]);
   const [test, setTest] = useState(true);
   const toggleTest = () => {
     setTest(!test);
@@ -13,7 +13,7 @@ function App() {
   return (
     <div className={styles.Wrapper}>
       <Accordion {...accordionProps}>
-        <AccordionSection title="section 1" id="id1">
+        <AccordionSection title="section 1">
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. In varius
             lobortis iaculis. Donec ornare tellus vel quam convallis, quis
@@ -25,8 +25,23 @@ function App() {
             nec iaculis eros pharetra volutpat. Maecenas fringilla ultrices
             massa vitae interdum.
           </p>
+          <Accordion>
+            <AccordionSection title="section 1">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
+                varius lobortis iaculis. Donec ornare tellus vel quam convallis,
+                quis tristique libero blandit. Morbi quis lacinia urna.
+                Curabitur laoreet in tortor ac faucibus. Duis laoreet eros
+                nulla, eget cursus elit mollis id. Fusce sagittis dui vitae
+                malesuada imperdiet. In non facilisis dui. Duis sit amet nulla
+                eu odio venenatis posuere. Nam congue luctus risus nec laoreet.
+                Quisque rutrum porttitor sapien, nec iaculis eros pharetra
+                volutpat. Maecenas fringilla ultrices massa vitae interdum.
+              </p>
+            </AccordionSection>
+          </Accordion>
         </AccordionSection>
-        <AccordionSection title="section 2" id="id2">
+        <AccordionSection title="section 2">
           <p>
             <a href="/">test link</a>
             Suspendisse lobortis diam quis magna faucibus, in volutpat eros
@@ -47,7 +62,7 @@ function App() {
           </p>
         </AccordionSection>
         {test && (
-          <AccordionSection title="section 3" id="id3">
+          <AccordionSection title="section 3">
             <p>
               <a href="/">test link</a>
               Suspendisse lobortis diam quis magna faucibus, in volutpat eros

@@ -7,21 +7,18 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import styles from "./Accordion.module.css";
+import { useId } from "./useId";
+import { useAccordionState } from "./useAccordionState";
 
 const AccordionContext = createContext({
   focusRef: {},
-  selected: null,
-  expandedAll: {},
+  selected: [null],
+  expandedAll: [],
   onToggle: undefined,
-  onNavigation: () => undefined
+  onNavigation: () => undefined,
+  id: null
 });
 export const useAccordionContext = () => useContext(AccordionContext);
-
-const getIds = children =>
-  React.Children.map(
-    children,
-    child => child && child.props && child.props.id
-  ).filter(x => x !== null);
 
 /**
  * Accordion according to Accordion Design Pattern in WAI-ARIA Authoring Practices 1.1
@@ -50,9 +47,33 @@ End
   👍 When focus is on an accordion header, moves focus to the last accordion header.
 ```
  */
-export const Accordion = ({ children, expanded, onToggle, ...rest }) => {
+export const Accordion = ({
+  children,
+  expanded: controlledExpanded,
+  onToggle: controlledOnToggle,
+  ...rest
+}) => {
+  const isControlledRef = useRef(controlledExpanded != null);
+  if (process.env.NODE_ENV === "development") {
+    if (isControlledRef.current && controlledExpanded == null) {
+      console.warn("Accordion is changing from controlled to uncontrolled.");
+    }
+    if (!isControlledRef.current && controlledExpanded != null) {
+      console.warn("Accordion is changing from  uncontrolled to controlled.");
+    }
+  }
+
+  const uncontrolled = useAccordionState([]);
+  const expanded = isControlledRef.current
+    ? controlledExpanded
+    : uncontrolled.expanded;
+  const onToggle = isControlledRef.current
+    ? controlledOnToggle
+    : uncontrolled.onToggle;
+
+  const id = useId();
   const focusRef = useRef(null);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState([null]);
 
   const context = useMemo(
     () => ({
@@ -60,97 +81,79 @@ export const Accordion = ({ children, expanded, onToggle, ...rest }) => {
       selected,
       expandedAll: expanded,
       onToggle,
+      id,
       onNavigation: key => {
         switch (key) {
           case "ArrowDown":
-            {
-              const ids = getIds(children);
-              const index = ids.findIndex(x => x === focusRef.current);
-              if (index >= ids.length - 1) {
-                setSelected(ids[0]);
-              } else {
-                setSelected(ids[index + 1]);
-              }
+            if (focusRef.current >= React.Children.count(children) - 1) {
+              setSelected([0]);
+            } else {
+              setSelected([focusRef.current + 1]);
             }
             break;
           case "ArrowUp":
-            {
-              const ids = getIds(children);
-              const index = ids.findIndex(x => x === focusRef.current);
-              if (index <= 0) {
-                setSelected(ids[ids.length - 1]);
-              } else {
-                setSelected(ids[index - 1]);
-              }
+            if (focusRef.current <= 0) {
+              setSelected([React.Children.count(children) - 1]);
+            } else {
+              setSelected([focusRef.current - 1]);
             }
             break;
           case "Home":
-            {
-              const ids = getIds(children);
-              setSelected(ids[0]);
-            }
+            setSelected([0]);
             break;
           case "End":
-            {
-              const ids = getIds(children);
-              setSelected(ids[ids.length - 1]);
-            }
+            setSelected([React.Children.count(children) - 1]);
             break;
           default:
         }
       }
     }),
-    [selected, setSelected, expanded, onToggle, children]
+    [selected, setSelected, expanded, onToggle, children, id]
   );
 
-  if (process.env.NODE_ENV === "development") {
-    const uniqueIds = new Set();
-    React.Children.forEach(children, child => {
-      if (child === null) return;
-      if (typeof child !== "object") {
-        console.warn(
-          `Only AccordionSection and null are allowed as a child of Accordion. Found primitive value: ${child}`
-        );
-        return;
-      }
-      if (typeof child.type === "string") {
-        console.warn(
-          `Only AccordionSection and null are allowed as a child of Accordion. Found ${
-            child.type
-          }`
-        );
-        return;
-      }
-      if (uniqueIds.has(child.props.id)) {
-        console.warn(
-          `AccordionSection id param should be unique, found duplicate key: ${
-            child.props.id
-          }`
-        );
-      } else {
-        uniqueIds.add(child.props.id);
-      }
-    });
-  }
-
   return (
-    <div
-      className={styles.Accordion}
-      {...rest}
-      onBlur={() => setSelected(null)}
-    >
+    <div className={styles.Accordion} {...rest}>
       <AccordionContext.Provider value={context}>
-        {children}
+        {React.Children.map(children, (child, index) => {
+          if (process.env.NODE_ENV === "development") {
+            if (child === null) return;
+            if (typeof child !== "object") {
+              console.warn(
+                `Only AccordionSection and null are allowed as a child of Accordion. Found primitive value: ${child}`
+              );
+              return;
+            }
+            if (typeof child.type === "string") {
+              console.warn(
+                `Only AccordionSection and null are allowed as a child of Accordion. Found ${
+                  child.type
+                }`
+              );
+              return;
+            }
+            if (child.props.index !== undefined) {
+              console.warn(
+                `Don't provide index param in AccordionSection it is used for internal purposes`
+              );
+            }
+          } else {
+            if (!child || !child.props) return child;
+          }
+          return React.cloneElement(child, {
+            ...child.props,
+            index
+          });
+        })}
       </AccordionContext.Provider>
     </div>
   );
 };
 
 Accordion.propTypes = {
-  expanded: PropTypes.objectOf(PropTypes.bool),
+  expanded: PropTypes.arrayOf(PropTypes.bool),
   onToggle: PropTypes.func
 };
 
 Accordion.defaultProps = {
-  expanded: {}
+  expanded: null
 };
