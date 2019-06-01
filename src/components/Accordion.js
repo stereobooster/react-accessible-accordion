@@ -12,7 +12,7 @@ import { useAccordionState } from "./useAccordionState";
 
 const AccordionContext = createContext({
   focusRef: {},
-  selected: null,
+  selected: [null],
   expandedAll: [],
   onToggle: undefined,
   onNavigation: () => undefined,
@@ -73,7 +73,7 @@ export const Accordion = ({
 
   const id = useId();
   const focusRef = useRef(null);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState([null]);
 
   const context = useMemo(
     () => ({
@@ -86,23 +86,23 @@ export const Accordion = ({
         switch (key) {
           case "ArrowDown":
             if (focusRef.current >= React.Children.count(children) - 1) {
-              setSelected(0);
+              setSelected([0]);
             } else {
-              setSelected(focusRef.current + 1);
+              setSelected([focusRef.current + 1]);
             }
             break;
           case "ArrowUp":
             if (focusRef.current <= 0) {
-              setSelected(React.Children.count(children) - 1);
+              setSelected([React.Children.count(children) - 1]);
             } else {
-              setSelected(focusRef.current - 1);
+              setSelected([focusRef.current - 1]);
             }
             break;
           case "Home":
-            setSelected(0);
+            setSelected([0]);
             break;
           case "End":
-            setSelected(React.Children.count(children) - 1);
+            setSelected([React.Children.count(children) - 1]);
             break;
           default:
         }
@@ -112,11 +112,7 @@ export const Accordion = ({
   );
 
   return (
-    <div
-      className={styles.Accordion}
-      {...rest}
-      onBlur={() => setSelected(null)}
-    >
+    <div className={styles.Accordion} {...rest}>
       <AccordionContext.Provider value={context}>
         {React.Children.map(children, (child, index) => {
           if (process.env.NODE_ENV === "development") {

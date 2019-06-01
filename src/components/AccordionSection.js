@@ -17,7 +17,7 @@ export const AccordionSection = ({ children, title, index }) => {
   const expanded = expandedAll[index];
   const labelRef = useRef();
   useEffect(() => {
-    if (index === selected && labelRef.current) {
+    if (index === selected[0] && labelRef.current) {
       labelRef.current.focus();
     }
   }, [index, selected]);

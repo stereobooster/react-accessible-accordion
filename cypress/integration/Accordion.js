@@ -82,10 +82,10 @@ describe("Accordion", () => {
 
   describe("Tab", () => {
     it("Moves focus to the next focusable element.", () => {
-      cy.get("body").blur();
       cy.get("body").tab();
       cy.focused().contains("section 1");
     });
+
     it("All focusable elements in the accordion are included in the page Tab sequence.", () => {
       cy.focused().tab();
       cy.focused().contains("section 2");
@@ -100,6 +100,7 @@ describe("Accordion", () => {
       cy.focused().tab({ shift: true });
       cy.focused().contains("section 3");
     });
+
     it("All focusable elements in the accordion are included in the page Tab sequence.", () => {
       cy.focused().tab({ shift: true });
       cy.focused().contains("test link");
@@ -112,12 +113,14 @@ describe("Accordion", () => {
     it("When focus is on an accordion header, moves focus to the next accordion header", () => {
       cy.contains("section 1").focus();
       cy.focused().type("{downarrow}");
+      cy.wait(100); // we need to wait to make sure React has enough time to switch focus
       cy.focused().contains("section 2");
     });
 
     it("When focus is on last accordion header, moves focus to first accordion header", () => {
       cy.contains("section 3").focus();
       cy.focused().type("{downarrow}");
+      cy.wait(100); // we need to wait to make sure React has enough time to switch focus
       cy.focused().contains("section 1");
     });
   });
@@ -126,12 +129,14 @@ describe("Accordion", () => {
     it("When focus is on an accordion header, moves focus to the previous accordion header", () => {
       cy.contains("section 2").focus();
       cy.focused().type("{uparrow}");
+      cy.wait(100); // we need to wait to make sure React has enough time to switch focus
       cy.focused().contains("section 1");
     });
 
     it("When focus is on last accordion header, moves focus to first accordion header", () => {
       cy.contains("section 1").focus();
       cy.focused().type("{uparrow}");
+      cy.wait(100); // we need to wait to make sure React has enough time to switch focus
       cy.focused().contains("section 3");
     });
   });
@@ -140,6 +145,7 @@ describe("Accordion", () => {
     it("When focus is on an accordion header, moves focus to the first accordion header.", () => {
       cy.contains("section 2").focus();
       cy.focused().type("{home}");
+      cy.wait(100); // we need to wait to make sure React has enough time to switch focus
       cy.focused().contains("section 1");
     });
   });
@@ -148,6 +154,7 @@ describe("Accordion", () => {
     it("When focus is on an accordion header, moves focus to the last accordion header.", () => {
       cy.contains("section 2").focus();
       cy.focused().type("{end}");
+      cy.wait(100); // we need to wait to make sure React has enough time to switch focus
       cy.focused().contains("section 3");
     });
   });
