@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import styles from "./AccordionSection.module.css";
 import { useAccordionContext } from "./Accordion";
+import { isFunction } from "./isFunction";
 
 export const AccordionSection = ({ children, title, index }) => {
   const {
@@ -76,7 +77,7 @@ export const AccordionSection = ({ children, title, index }) => {
         hidden={!expanded}
         className={styles.Panel}
       >
-        {expanded && children}
+        {expanded && isFunction(children) ? children() : children}
       </div>
     </>
   );
@@ -84,5 +85,6 @@ export const AccordionSection = ({ children, title, index }) => {
 
 AccordionSection.propTypes = {
   index: PropTypes.number,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([PropTypes.func, PropTypes.node])
 };
