@@ -77,7 +77,7 @@ export const AccordionSection = ({ children, title, index }) => {
         hidden={!expanded}
         className={styles.Panel}
       >
-        {expanded && isFunction(children) ? children() : children}
+        {expanded && (isFunction(children) ? children() : children)}
       </div>
     </>
   );
