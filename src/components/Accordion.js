@@ -51,6 +51,7 @@ export const Accordion = ({
   children,
   expanded: controlledExpanded,
   onToggle: controlledOnToggle,
+  id,
   ...rest
 }) => {
   const isControlledRef = useRef(controlledExpanded != null);
@@ -71,7 +72,7 @@ export const Accordion = ({
     ? controlledOnToggle
     : uncontrolled.onToggle;
 
-  const id = useId();
+  const uid = useId(id);
   const focusRef = useRef(null);
   const [selected, setSelected] = useState([null]);
 
@@ -81,7 +82,7 @@ export const Accordion = ({
       selected,
       expandedAll: expanded,
       onToggle,
-      id,
+      id: uid,
       onNavigation: key => {
         switch (key) {
           case "ArrowDown":
@@ -108,11 +109,11 @@ export const Accordion = ({
         }
       }
     }),
-    [selected, setSelected, expanded, onToggle, children, id]
+    [selected, setSelected, expanded, onToggle, children, uid]
   );
 
   return (
-    <div className={styles.Accordion} {...rest}>
+    <div className={styles.Accordion} id={id} {...rest}>
       <AccordionContext.Provider value={context}>
         {React.Children.map(children, (child, index) => {
           if (process.env.NODE_ENV === "development") {

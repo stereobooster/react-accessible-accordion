@@ -1,7 +1,6 @@
 import nanoid from "nanoid";
-import { useState } from "react";
+import { useMemo } from "react";
 
-export const useId = () => {
-  const [id] = useState(() => nanoid(5));
-  return id;
+export const useId = (id) => {
+  return useMemo(() => id === undefined ? nanoid(5) : id, [id]);
 };

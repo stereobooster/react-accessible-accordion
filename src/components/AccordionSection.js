@@ -12,8 +12,8 @@ export const AccordionSection = ({ children, title, index }) => {
     onNavigation,
     id
   } = useAccordionContext();
-  const sectionId = `section-${id}-${index}`;
-  const labelId = `label-${id}-${index}`;
+  const sectionId = `${id}-${index}-section`;
+  const labelId = `${id}-${index}-label`;
   const expanded = expandedAll[index];
   const labelRef = useRef();
   useEffect(() => {
