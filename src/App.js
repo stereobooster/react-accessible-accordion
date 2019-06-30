@@ -64,7 +64,6 @@ function App() {
         {test && (
           <AccordionSection title="section 3">
             {() => (
-              // I don't know how to disable warning (Functions are not valid as a React child)
               <p>
                 <a href="/">test link</a>
                 Suspendisse lobortis diam quis magna faucibus, in volutpat eros
